@@ -9,11 +9,11 @@ public class SpeedConverter {
         printConversion(75.114); // 47
     }
 
-    public static long toMilesPerHour(double kilometersPerHour) {
+    private static long toMilesPerHour(double kilometersPerHour) {
         return (kilometersPerHour >= 0) ? Math.round(kilometersPerHour/1.609) : -1;
     }
 
-    public static void printConversion(double kilometersPerHour) {
+    private static void printConversion(double kilometersPerHour) {
         long milesPerHour = toMilesPerHour(kilometersPerHour);
         if (milesPerHour >= 0) {
             System.out.println( kilometersPerHour + " km/h = " + milesPerHour + " mi/h");
