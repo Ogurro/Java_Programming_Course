@@ -1,3 +1,5 @@
+package Basic_Exercises;
+
 public class NumberOfDaysInMonth {
 
     public static void main(String[] args) {

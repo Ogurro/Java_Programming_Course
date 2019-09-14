@@ -1,3 +1,5 @@
+package Basic_Exercises;
+
 public class PaintJob {
 
     public static void main(String[] args) {

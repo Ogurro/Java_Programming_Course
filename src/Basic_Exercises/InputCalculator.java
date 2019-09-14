@@ -1,3 +1,5 @@
+package Basic_Exercises;
+
 import java.util.Scanner;
 
 public class InputCalculator {
