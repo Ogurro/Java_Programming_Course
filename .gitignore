@@ -1,5 +1,5 @@
 #user test code file
-CodeTests.java
+CodeTests*.java
 
 .idea
 # Created by https://www.gitignore.io/api/java,linux,windows,intellij+iml
