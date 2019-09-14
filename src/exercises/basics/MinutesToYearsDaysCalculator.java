@@ -1,4 +1,4 @@
-package Basic_Exercises;
+package exercises.basics;
 
 public class MinutesToYearsDaysCalculator {
     private static final String INVALID_VALUE_MSG = "Invalid Value";
