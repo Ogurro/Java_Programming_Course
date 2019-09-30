@@ -1,8 +1,8 @@
-package learning.java;
+package learning.java.mylibrary;
 
 public class Series {
 
-    public static int nSum(int n) {
+    public static long nSum(int n) {
         /*
          * Returns the sum of {int} form 0 to n.
          * If n < 0 @returns -1.
@@ -10,14 +10,10 @@ public class Series {
         if (n < 0) {
             return -1;
         }
-        int sum = 0;
-        for (int i = 1; i <= n; i++) {
-            sum += i;
-        }
-        return sum;
+        return (n * (n + 1)) / 2;
     }
 
-    public static int factorial(int n) {
+    public static long factorial(int n) {
         /*
          * Returns the product of {int} form 1 to n.
          * i.e. 1 * 2 * 3 * 4 ... * (n - 1) * n.
@@ -34,7 +30,7 @@ public class Series {
         return factorial;
     }
 
-    public static int fibonacci(int n) {
+    public static long fibonacci(int n) {
         /*
          * Returns the nth Fibonacci {int}. These are defined as:
          * If n < 0 @returns -1.

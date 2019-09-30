@@ -1,6 +1,6 @@
-package learning.java2;
+package learning.java;
 
-import static learning.java.Series.*;
+import static learning.java.mylibrary.Series.*;
 
 public class Main {
 
