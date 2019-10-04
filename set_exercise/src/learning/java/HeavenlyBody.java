@@ -85,9 +85,11 @@ public abstract class HeavenlyBody {
 
         @Override
         public boolean equals(Object obj) {
-            Key key = (Key) obj;
-            if (this.name.equals(key.getName())) {
-                return (this.bodyType == key.getBodyType());
+            if (obj instanceof Key) {
+                Key key = (Key) obj;
+                if (this.name.equals(key.getName())) {
+                    return (this.bodyType == key.getBodyType());
+                }
             }
             return false;
         }
