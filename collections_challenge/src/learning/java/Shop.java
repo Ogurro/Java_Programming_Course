@@ -73,9 +73,9 @@ public class Shop extends StockList {
         if (basket != null) {
             Map<StockItem, Integer> basketContent = basket.checkOut();
             for (Map.Entry<StockItem, Integer> entry : basketContent.entrySet()) {
-                StockItem temp = this.getItem(entry.getKey().getName());
-                temp.adjustStockQuantity(-entry.getValue());
-                temp.adjustStockReserved(-entry.getValue());
+                StockItem item = entry.getKey();
+                item.adjustStockQuantity(-entry.getValue());
+                item.adjustStockReserved(-entry.getValue());
             }
         }
     }
