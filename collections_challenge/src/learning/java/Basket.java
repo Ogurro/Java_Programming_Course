@@ -47,6 +47,12 @@ public class Basket implements Comparable<Basket> {
         return 0;
     }
 
+    public Map<StockItem, Integer> checkOut() {
+        Map<StockItem, Integer> basketListCopy = new HashMap<>(Collections.unmodifiableMap(this.basketList));
+        this.basketList.clear();
+        return basketListCopy;
+    }
+
     public void listItem() {
         System.out.println("\nItems in basket: ");
         for (Map.Entry<StockItem, Integer> item : this.basketList.entrySet()) {
@@ -55,7 +61,6 @@ public class Basket implements Comparable<Basket> {
                     temp.getName(), temp.getPrice(), item.getValue()));
         }
     }
-
 
     @Override
     public int compareTo(Basket o) {

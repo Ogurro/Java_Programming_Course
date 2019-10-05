@@ -3,11 +3,13 @@ package learning.java;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class BasketTest {
 
-    private static StockList stockList;
     private static StockItem item1;
     private static StockItem item2;
     private static Basket basket;
@@ -16,7 +18,7 @@ public class BasketTest {
 
     @Before
     public void setUp() {
-        stockList = new StockList();
+        StockList stockList = new StockList();
         item1 = new StockItem("item 1", 30.00, 10);
         item2 = new StockItem("item 2", 7.50, 20);
         stockList.addItem(item1);
@@ -50,6 +52,32 @@ public class BasketTest {
     }
 
     @Test
+    public void checkOut() {
+        int quantity1 = 10;
+        int quantity2 = 5;
+        basket.adjustBasket(item1, quantity1);
+        basket.adjustBasket(item1, quantity2);
+        basket.adjustBasket(item2, quantity2);
+        assertEquals((quantity1 + quantity2), basket.getItemQuantity(item1));
+        assertEquals(quantity2, basket.getItemQuantity(item2));
+
+        Map<StockItem, Integer> basketItemCopy = new HashMap<>(basket.items());
+        Map<StockItem, Integer> output = basket.checkOut();
+        if ((basketItemCopy.size() == 0) || (output.size() == 0) ){
+            fail();
+        }
+
+        for (Map.Entry<StockItem, Integer> entry : basketItemCopy.entrySet()) {
+           boolean outputContainsKey = output.containsKey(entry.getKey());
+           if (outputContainsKey) {
+               assertEquals(entry.getValue(), output.get(entry.getKey()));
+           } else {
+               fail();
+           }
+        }
+    }
+
+    @Test
     public void compareTo() {
         assertEquals(0, basket.compareTo(basket3));
         assertEquals(0, basket3.compareTo(basket));
@@ -59,7 +87,7 @@ public class BasketTest {
     }
 
     @Test
-    public void testEquals() {
+    public void equals() {
         assertEquals(basket, basket3);
         assertEquals(basket3, basket);
 

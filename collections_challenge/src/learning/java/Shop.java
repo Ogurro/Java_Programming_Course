@@ -50,12 +50,6 @@ public class Shop extends StockList {
             return 0;
         }
 
-        if (quantity >= 0) {
-            System.out.println("Reserving " + item + " quantity "+ quantity);
-        } else {
-            System.out.println("Removing reservation of item "+ item + " quantity "+ quantity);
-        }
-
         if (this.reserveItem(stockItem, quantity) != 0) {
             basketInShop.adjustBasket(stockItem, quantity);
             return quantity;
@@ -68,6 +62,21 @@ public class Shop extends StockList {
             return reserveItem(basket, item, -quantity);
         } else {
             return reserveItem(basket, item, quantity);
+        }
+    }
+
+    public void checkOut(String basketName) {
+        checkOut(this.getBasket(basketName));
+    }
+
+    public void checkOut(Basket basket) {
+        if (basket != null) {
+            Map<StockItem, Integer> basketContent = basket.checkOut();
+            for (Map.Entry<StockItem, Integer> entry : basketContent.entrySet()) {
+                StockItem temp = this.getItem(entry.getKey().getName());
+                temp.adjustStockQuantity(-entry.getValue());
+                temp.adjustStockReserved(-entry.getValue());
+            }
         }
     }
 

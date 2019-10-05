@@ -163,4 +163,58 @@ public class ShopTest {
         assertEquals(0, shop.releaseItem(basket1.getName(), item2.getName(), releaseQuantity));
         assertEquals(0, basket1.getItemQuantity(item2));
     }
+
+    @Test
+    public void checkOut() {
+        shop.addItem(item2);
+        shop.addBasket(basket1);
+        shop.addBasket(basket2);
+        int quantity1 = 20;
+        int quantity2 = 5;
+        int stockQuantity1 = item1.getStockQuantity();
+        int stockQuantity2 = item2.getStockQuantity();
+        // prepare basket 1 - item1 = 25, item2 = 5
+        shop.reserveItem(basket1.getName(), item1.getName(), quantity1);
+        shop.reserveItem(basket1.getName(), item1.getName(), quantity2);
+        shop.reserveItem(basket1.getName(), item2.getName(), quantity2);
+        int b1TotalItem1 = 25;
+        int b1TotalItem2 = 5;
+        assertEquals((quantity1 + quantity2), basket1.getItemQuantity(item1));
+        assertEquals(quantity2, basket1.getItemQuantity(item2));
+        // prepare basket 2 - item1 = 20
+        shop.reserveItem(basket2.getName(), item1.getName(), quantity1);
+        int b2TotalItem1 = 20;
+        // check basket 1 & basket 2
+        assertEquals(b2TotalItem1, basket2.getItemQuantity(item1));
+        assertEquals((b1TotalItem1 + b2TotalItem1), item1.getStockReserved());
+        assertEquals(stockQuantity1, item1.getStockQuantity());
+        assertEquals(b1TotalItem2, item2.getStockReserved());
+        assertEquals(stockQuantity2, item2.getStockQuantity());
+
+        //checkOut basket1
+        shop.checkOut("basket 1");
+        // check basket 1 - should be empty
+        assertEquals(0, basket1.items().size());
+        assertEquals(0, basket1.getItemQuantity(item1));
+        assertEquals(0, basket1.getItemQuantity(item2));
+        // check basket 2 - should be intact
+        assertEquals(1, basket2.items().size());
+        assertEquals(quantity1, basket2.getItemQuantity(item1));
+        // check item 1 - stockQuantity=25, reservedQuantity=20;
+        stockQuantity1 -= b1TotalItem1;
+        stockQuantity2 -= b1TotalItem2;
+        assertEquals(stockQuantity1, item1.getStockQuantity());
+        assertEquals(b2TotalItem1, item1.getStockReserved());
+        assertEquals(stockQuantity2, item2.getStockQuantity());
+        assertEquals(0, item2.getStockReserved());
+
+        //checkOut basket2
+        shop.checkOut(basket2);
+        stockQuantity1 -= b2TotalItem1;
+        assertEquals(stockQuantity1, item1.getStockQuantity());
+        assertEquals(0, item1.getStockReserved());
+
+
+
+    }
 }
