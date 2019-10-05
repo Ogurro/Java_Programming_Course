@@ -23,8 +23,8 @@ public class StockItemTest {
     public void setPrice() {
         item1.setPrice(100.20);
         item2.setPrice(0.34);
-        assertEquals((int) (item1.getPrice() * 100), 10020);
-        assertEquals((int) (item2.getPrice() * 100), 34);
+        assertEquals(10020, (int) (item1.getPrice() * 100));
+        assertEquals(34, (int) (item2.getPrice() * 100));
 
     }
 
@@ -32,22 +32,22 @@ public class StockItemTest {
     public void adjustStockQuantity() {
         int modifier = -51;
         int oldValue = item1.getStockQuantity();
-       item1.adjustStockQuantity(modifier);
-       assertEquals(item1.getStockQuantity(), oldValue);
+        item1.adjustStockQuantity(modifier);
+        assertEquals(oldValue, item1.getStockQuantity());
 
         modifier = 30;
         oldValue = item1.getStockQuantity();
         item1.adjustStockQuantity(modifier);
-        assertEquals(item1.getStockQuantity(), oldValue + modifier);
+        assertEquals((oldValue + modifier), item1.getStockQuantity());
     }
 
     @Test
     public void compareTo() {
-        assertEquals(item1.compareTo(item3), 0);
-        assertEquals(item3.compareTo(item1), 0);
+        assertEquals(0, item1.compareTo(item3));
+        assertEquals(0, item3.compareTo(item1));
 
-        assertNotEquals(item1.compareTo(item2), 0);
-        assertNotEquals(item2.compareTo(item1), 0);
+        assertNotEquals(0, item1.compareTo(item2));
+        assertNotEquals(0, item2.compareTo(item1));
     }
 
     @Test

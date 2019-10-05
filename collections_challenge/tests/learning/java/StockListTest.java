@@ -22,50 +22,85 @@ public class StockListTest {
 
     @Test
     public void addItem() {
-        assertEquals(stockList.addItem(null), 0);
-        assertEquals(stockList.items().size(), 0);
+        assertEquals(0, stockList.addItem(null));
+        assertEquals(0, stockList.items().size());
 
         int quantityValue = item1.getStockQuantity();
-        assertEquals(stockList.addItem(item1), quantityValue);
-        assertEquals(stockList.items().size(), 1);
+        assertEquals(quantityValue, stockList.addItem(item1));
+        assertEquals(1, stockList.items().size());
 
         quantityValue = item2.getStockQuantity();
-        assertEquals(stockList.addItem(item2), quantityValue);
-        assertEquals(stockList.items().size(), 2);
+        assertEquals(quantityValue, stockList.addItem(item2));
+        assertEquals(2, stockList.items().size());
 
         quantityValue = item1.getStockQuantity() + item3.getStockQuantity();
-        assertEquals(stockList.addItem(item3), quantityValue);
-        assertEquals(stockList.items().size(), 2);
+        assertEquals(quantityValue, stockList.addItem(item3));
+        assertEquals(2, stockList.items().size());
     }
 
     @Test
-    public void sellItem() {
+    public void reserveItem() {
         stockList.addItem(item1);
 
-        int sellQuantity = item1.getStockQuantity() + 1;
+        int reserveQuantity = item1.getStockQuantity() + 1;
         // sell quantity > stock quantity should return 0
-        assertEquals(stockList.sellItem(item1, sellQuantity), 0);
+        assertEquals(0, stockList.reserveItem(item1, reserveQuantity));
         // item not in stockList - should return 0
         int value = 20;
         item2.adjustStockQuantity(value);
-        sellQuantity = value - 1;
-        assertEquals(stockList.sellItem(item2, sellQuantity), 0);
+        reserveQuantity = value - 1;
+        assertEquals(0, stockList.reserveItem(item2, reserveQuantity));
 
-        sellQuantity = 3;
-        int oldQuantity = item1.getStockQuantity();
-        assertEquals(stockList.sellItem(item1, sellQuantity), sellQuantity);
-        assertEquals(item1.getStockQuantity(), oldQuantity - sellQuantity);
+        reserveQuantity = 3;
+        int oldStockQuantity = item1.getStockQuantity();
+        int oldStockReserved = item1.getStockReserved();
+        // reserve item, quantity should not change
+        assertEquals(reserveQuantity, stockList.reserveItem(item1, reserveQuantity));
+        assertEquals((oldStockReserved + reserveQuantity), item1.getStockReserved());
+        assertEquals(oldStockQuantity, item1.getStockQuantity());
+
+        // reserve item (quantity < 0)
+        reserveQuantity = -1;
+        oldStockReserved = item1.getStockReserved();
+        assertEquals(reserveQuantity, stockList.reserveItem(item1, reserveQuantity));
+        assertEquals((oldStockReserved + reserveQuantity), item1.getStockReserved());
+        assertEquals(oldStockQuantity, item1.getStockQuantity());
+
+        // reserve item (quantity < 0, stockReserved + quantity < 0)
+        reserveQuantity = -30;
+        oldStockReserved = item1.getStockReserved();
+        assertEquals(0, stockList.reserveItem(item1, reserveQuantity));
+        assertEquals(oldStockReserved, item1.getStockReserved());
+
+        // reserve item (quantity < 0, stockReserved + quantity = 0)
+        reserveQuantity = -(item1.getStockReserved());
+        assertEquals(reserveQuantity, stockList.reserveItem(item1, reserveQuantity));
+        assertEquals(0, item1.getStockReserved());
+
+
     }
 
     @Test
     public void get() {
         String key = item1.getName();
         stockList.addItem(item1);
-        assertEquals(stockList.get(key), item1);
-        assertEquals(stockList.get(key), item3);
+        assertEquals(item1, stockList.getItem(key));
+        assertEquals(item3, stockList.getItem(key));
 
         // item not in stockList
         key = item2.getName();
-        assertNull(stockList.get(key));
+        assertNull(stockList.getItem(key));
     }
+
+    @Test
+    public void items() {
+        assertEquals(0, stockList.items().size());
+        stockList.addItem(item1);
+        assertEquals(1, stockList.items().size());
+        stockList.addItem(item2);
+        assertEquals(2, stockList.items().size());
+        stockList.addItem(item3);
+        assertEquals(2, stockList.items().size());
+    }
+
 }
