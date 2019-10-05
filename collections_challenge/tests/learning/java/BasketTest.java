@@ -37,6 +37,14 @@ public class BasketTest {
         assertEquals(quantity, basket.adjustBasket(item1, quantity));
         // item2 not in basket should return 0;
         assertEquals(0, basket.adjustBasket(item2, 15));
+
+        // item1 remove 5 quantity, should return previous value (10)
+        quantity = -5;
+        assertEquals(10, basket.adjustBasket(item1, quantity));
+        // item1 remove 5 quantity, should return previous value (5) and remove item since value = 0
+        assertEquals(5, basket.adjustBasket(item1, quantity));
+        assertEquals(0, basket.getItemQuantity(item1));
+        assertFalse(basket.items().containsKey(item1));
     }
 
 

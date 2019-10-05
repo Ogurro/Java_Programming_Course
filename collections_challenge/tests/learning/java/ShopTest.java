@@ -77,7 +77,7 @@ public class ShopTest {
 
 
         //un-reserve more items than reserved items.
-        int wrongReserveQuantity = -reserveQuantity -1;
+        int wrongReserveQuantity = -reserveQuantity - 1;
         assertEquals(0, shop.reserveItem(basket1.getName(), item1.getName(), wrongReserveQuantity));
         assertEquals(stockQuantity1, item1.getStockQuantity());
         assertEquals(reserveQuantity, item1.getStockReserved());
@@ -100,7 +100,6 @@ public class ShopTest {
         assertEquals(1, basket1.items().size());
         assertEquals(item1.getStockReserved(), basket1.getItemQuantity(item1));
 
-
         shop.addItem(item2);
         // item not in basket (quantity < 0)
         reserveQuantity = -10;
@@ -115,6 +114,11 @@ public class ShopTest {
         assertEquals(2, basket1.items().size());
         assertEquals(item1.getStockReserved(), basket1.getItemQuantity(item1));
         assertEquals(reserveQuantity, basket1.getItemQuantity(item2));
+
+        //unreserve all items from basket 1
+        assertEquals(-item1.getStockReserved(), shop.reserveItem(basket1.getName(), item1.getName(), -(item1.getStockQuantity())));
+        assertEquals(0, shop.getBasket("basket 1").getItemQuantity(item1));
+        assertFalse(shop.getBasket("basket 1").items().containsKey(item1));
     }
 
     @Test
@@ -128,27 +132,33 @@ public class ShopTest {
 
         // positive quantity release (quantity > reserved quantity
         int releaseQuantity = reserveQuantity + 1;
-        assertEquals(0,shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
+        assertEquals(0, shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
         assertEquals(reserveQuantity, item1.getStockReserved());
         assertEquals(reserveQuantity, basket1.getItemQuantity(item1.getName()));
         // negative quantity release (quantity > reserved quantity
         releaseQuantity = -releaseQuantity;
-        assertEquals(0,shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
+        assertEquals(0, shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
         assertEquals(reserveQuantity, item1.getStockReserved());
         assertEquals(reserveQuantity, basket1.getItemQuantity(item1.getName()));
 
         // positive quantity release (valid)
         releaseQuantity = 2;
-        assertEquals(-releaseQuantity,shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
+        assertEquals(-releaseQuantity, shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
         assertEquals((reserveQuantity - releaseQuantity), item1.getStockReserved());
         assertEquals((reserveQuantity - releaseQuantity), basket1.getItemQuantity(item1.getName()));
 
         // negative quantity release (valid)
         reserveQuantity = (reserveQuantity - releaseQuantity);
         releaseQuantity = -releaseQuantity;
-        assertEquals(releaseQuantity,shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
+        assertEquals(releaseQuantity, shop.releaseItem(basket1.getName(), item1.getName(), releaseQuantity));
         assertEquals((reserveQuantity + releaseQuantity), item1.getStockReserved());
         assertEquals((reserveQuantity + releaseQuantity), basket1.getItemQuantity(item1.getName()));
+
+        //release all items from basket 1
+        int releaseAll = basket1.getItemQuantity(item1);
+        assertEquals(-releaseAll, shop.releaseItem(basket1.getName(), item1.getName(), releaseAll));
+        assertEquals(0, shop.getBasket(basket1.getName()).getItemQuantity(item1));
+        assertFalse(shop.getBasket(basket1.getName()).items().containsKey(item1));
 
         // release item not in basket
         // positive quantity
@@ -213,8 +223,5 @@ public class ShopTest {
         stockQuantity1 -= b2TotalItem1;
         assertEquals(stockQuantity1, item1.getStockQuantity());
         assertEquals(0, item1.getStockReserved());
-
-
-
     }
 }

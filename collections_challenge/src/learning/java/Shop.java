@@ -52,6 +52,8 @@ public class Shop extends StockList {
 
         if (this.reserveItem(stockItem, quantity) != 0) {
             basketInShop.adjustBasket(stockItem, quantity);
+            if (basketInShop.getItemQuantity(stockItem) == 0)
+                basketInShop.removeItem(stockItem);
             return quantity;
         }
         return 0;

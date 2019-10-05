@@ -27,9 +27,16 @@ public class Basket implements Comparable<Basket> {
                 }
             }
             basketList.put(item, inBasket + quantity);
+            if (this.basketList.get(item) == 0){
+                this.removeItem(item);
+            }
             return inBasket;
         }
         return 0;
+    }
+
+    public void removeItem(StockItem item) {
+        this.basketList.remove(item, 0);
     }
 
     public Map<StockItem, Integer> items() {
