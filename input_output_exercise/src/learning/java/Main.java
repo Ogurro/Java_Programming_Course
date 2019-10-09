@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int loc = 1;
+        int loc = 100;
         while (true) {
             System.out.println(locations.get(loc).getDescription());
             if (loc == 0) {
@@ -43,7 +43,15 @@ public class Main {
     private static String determineDirection(String direction) {
         Map<String, String> pattern = new HashMap<>();
         pattern.put("SOUTH", "S");
+        pattern.put("SOUTH-EAST", "NE");
+        pattern.put("SOUTHEAST", "NE");
+        pattern.put("SOUTH-WEST", "NW");
+        pattern.put("SOUTHWEST", "NW");
         pattern.put("NORTH", "N");
+        pattern.put("NORTH-EAST", "NE");
+        pattern.put("NORTHEAST", "NE");
+        pattern.put("NORTH-WEST", "NW");
+        pattern.put("NORTHWEST", "NW");
         pattern.put("EAST", "E");
         pattern.put("WEST", "W");
         pattern.put("UP", "U");
